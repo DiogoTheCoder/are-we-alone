@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Player;
+import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.tools.Console;
 
 public class SolarSystem {
@@ -63,8 +64,8 @@ public class SolarSystem {
 			}
 
 			for (int column = 0; column < theMap[row].length; column++) {
-				if (row == Game.getPlayer().getSolarSystemPos().getX()
-						&& column == Game.getPlayer().getSolarSystemPos().getY()) {
+				if (row == Game.getPlayer().getSolarSystemPos().getY()
+						&& column == Game.getPlayer().getSolarSystemPos().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else if (Objects.equals(theMap[row][column], Character.toString(Star.MAP_KEY))) {
 					System.out.print(Star.MAP_KEY + "  ");
@@ -95,11 +96,17 @@ public class SolarSystem {
 		return this.theMap;
 	}
 
-	boolean isStarAt(int x, int y) {
-		return Objects.equals(this.theMap[x][y], Character.toString(Star.MAP_KEY));
+	private String getAtPos(Position position) {
+		try {
+			return this.theMap[position.getX()][position.getY()];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// We have attempted to go outside the Solar System
+			// TODO: allow this to happen
+			return e.getMessage();
+		}
 	}
 
-	boolean isPlanetAt(int x, int y) {
-		return Objects.equals(this.theMap[x][y], Character.toString(Planet.MAP_KEY));
+	public boolean isEmptyAt(int x, int y) {
+		return this.getAtPos(new Position(x, y)).isEmpty();
 	}
 }

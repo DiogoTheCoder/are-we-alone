@@ -1,6 +1,11 @@
 package com.diogothecoder.arewealone.tools;
 
+import java.util.Scanner;
+
 public class Console {
+
+	static Scanner scanner;
+
 	public static void clear() {  
 	    try {
 	        final String os = System.getProperty("os.name");
@@ -14,5 +19,12 @@ public class Console {
 	    } finally {
 			System.out.println();
 		}
-	}  
+	}
+
+	public static String getUserInput() {
+		System.out.println("What would you like to do?");
+
+		scanner = new Scanner(System.in);
+		return scanner.nextLine();
+	}
 }

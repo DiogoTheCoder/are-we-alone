@@ -54,8 +54,8 @@ public class Universe {
 			}
 			
 			for (int column = 0; column < theMap[row].length; column++) {
-				if (row == Game.getPlayer().getUniversePos().getX()
-						&& column == Game.getPlayer().getUniversePos().getY()) {
+				if (row == Game.getPlayer().getUniversePos().getY()
+						&& column == Game.getPlayer().getUniversePos().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else {
 					System.out.print(".  ");					

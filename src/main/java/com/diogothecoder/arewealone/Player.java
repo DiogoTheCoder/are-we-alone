@@ -1,10 +1,11 @@
 package com.diogothecoder.arewealone;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 
-import com.diogothecoder.arewealone.map.Planet;
-import com.diogothecoder.arewealone.map.Star;
+import com.diogothecoder.arewealone.map.*;
 import com.diogothecoder.arewealone.tools.Logger;
+import javafx.geometry.Pos;
 
 public class Player {
 	public static char MAP_KEY = 'X';
@@ -14,13 +15,36 @@ public class Player {
 	private Position universePosition;
 	private Position galaxyPosition;
 	private Position solarSystemPosition;
+
+	private Universe currentUniverse;
+	private Galaxy currentGalaxy;
+	private SolarSystem currentSolarSystem;
 	
 	public Player() {
 		Logger.Debug("Creating player...");
 		random = new Random();
-		this.universePosition = getRandomPos(Game.getUniverse().getMap());
-		this.galaxyPosition = getRandomPos(Game.getUniverse().getGalaxy(this.universePosition).getMap());
-		this.solarSystemPosition = getRandomPos(Game.getUniverse().getGalaxy(this.universePosition).getSolarSystem(this.galaxyPosition).getMap());
+
+		this.currentUniverse = Game.getUniverse();
+		if (this.currentUniverse == null) {
+			Logger.Error("Cannot find universe!");
+			return;
+		}
+
+		this.universePosition = getRandomPos(this.currentUniverse.getMap());
+		this.currentGalaxy = this.currentUniverse.getGalaxy(this.universePosition);
+		if (this.currentUniverse == null) {
+			Logger.Error("Cannot find galaxy!");
+			return;
+		}
+
+		this.galaxyPosition = getRandomPos(this.currentGalaxy.getMap());
+		this.currentSolarSystem = this.currentGalaxy.getSolarSystem(this.galaxyPosition);
+		if (this.currentUniverse == null) {
+			Logger.Error("Cannot find solar system!");
+			return;
+		}
+
+		this.solarSystemPosition = getRandomPos(this.currentSolarSystem.getMap());
 	}
 	
 	private Position getRandomPos(String[][] map) {
@@ -56,9 +80,50 @@ public class Player {
 
 	/**
 	 * Return an array of the possible navigation options for the Player
-	 * i.e. ['N', 'E', 'S', W]
+	 * i.e. {'N', 'E', 'S', W}
+	 *
+	 * @return navigationOptions
 	 */
-	private void getNavigationOptions() {
+	protected LinkedHashMap<Character, String> getNavigationOptions() {
+		// We use LinkedHashMap and not just regular HashMap, so we can maintain the insertion order
+		LinkedHashMap<Character, String> navigationOptions = new LinkedHashMap<>();
 
+		// Is there anything North of us?
+		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1)) {
+			navigationOptions.put('N', "Accelerate Northwards");
+		}
+
+		// What about East?
+		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY())) {
+			navigationOptions.put('E', "Accelerate Eastwards");
+		}
+
+		// And how about South?
+		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1)) {
+			navigationOptions.put('S', "Accelerate Southwards");
+		}
+
+		// Finally, what about West?
+		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY())) {
+			navigationOptions.put('W', "Accelerate Westwards");
+		}
+
+		return navigationOptions;
+	}
+
+	protected void goNorth() {
+		this.solarSystemPosition = new Position(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1);
+	}
+
+	protected void goEast() {
+		this.solarSystemPosition = new Position(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY());
+	}
+
+	protected void goSouth() {
+		this.solarSystemPosition = new Position(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1);
+	}
+
+	protected void goWest() {
+		this.solarSystemPosition = new Position(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY());
 	}
 }

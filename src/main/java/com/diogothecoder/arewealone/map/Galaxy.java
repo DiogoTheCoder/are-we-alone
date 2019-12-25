@@ -52,8 +52,8 @@ public class Galaxy {
 			}
 			
 			for (int column = 0; column < theMap[row].length; column++) {
-				if (row == Game.getPlayer().getGalaxyPos().getX()
-						&& column == Game.getPlayer().getGalaxyPos().getY()) {
+				if (row == Game.getPlayer().getGalaxyPos().getY()
+						&& column == Game.getPlayer().getGalaxyPos().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else if (Objects.equals(theMap[row][column], "B")) {
 					System.out.print("B  ");
