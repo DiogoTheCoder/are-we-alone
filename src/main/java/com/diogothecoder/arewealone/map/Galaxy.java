@@ -1,8 +1,10 @@
 package com.diogothecoder.arewealone.map;
 
+import java.util.Objects;
 import java.util.Random;
 
 import com.diogothecoder.arewealone.Game;
+import com.diogothecoder.arewealone.Player;
 import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.tools.Console;
 
@@ -52,11 +54,11 @@ public class Galaxy {
 			for (int column = 0; column < theMap[row].length; column++) {
 				if (row == Game.getPlayer().getGalaxyPos().getX()
 						&& column == Game.getPlayer().getGalaxyPos().getY()) {
-					System.out.print("X  ");
-				} else if (theMap[row][column] != "B") {
-					System.out.print(".  ");					
-				} else {
+					System.out.print(Player.MAP_KEY + "  ");
+				} else if (Objects.equals(theMap[row][column], "B")) {
 					System.out.print("B  ");
+				} else {
+					System.out.print(".  ");
 				}
 			}
 			

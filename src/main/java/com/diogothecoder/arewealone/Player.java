@@ -5,6 +5,8 @@ import java.util.Random;
 import com.diogothecoder.arewealone.tools.Logger;
 
 public class Player {
+	public static char MAP_KEY = 'P';
+
 	protected static Random random;
 	
 	private Position universePosition;

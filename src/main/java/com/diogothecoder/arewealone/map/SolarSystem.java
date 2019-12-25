@@ -1,8 +1,10 @@
 package com.diogothecoder.arewealone.map;
 
+import java.util.Objects;
 import java.util.Random;
 
 import com.diogothecoder.arewealone.Game;
+import com.diogothecoder.arewealone.Player;
 import com.diogothecoder.arewealone.tools.Console;
 
 public class SolarSystem {
@@ -16,7 +18,11 @@ public class SolarSystem {
 		random = new Random();
 		generate();
 	}
-	
+
+	/**
+	 * Generating the Planets and Star for
+	 * the given Solar System.
+	 */
 	private void generate() {
 		int numOfPlanets = Universe.random.nextInt(Math.abs(Config.MAX_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS - Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS)) + Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS;
 
@@ -35,7 +41,7 @@ public class SolarSystem {
 				int randomLocationY = random.nextInt(this.theMap[randomLocationX].length);
 				
 				if (this.theMap[randomLocationX][randomLocationY] == null) {
-					this.theMap[randomLocationX][randomLocationY] = Integer.toString(i);
+					this.theMap[randomLocationX][randomLocationY] = Character.toString(Planet.MAP_KEY);
 					break;
 				}
 			}
@@ -54,9 +60,11 @@ public class SolarSystem {
 			for (int column = 0; column < theMap[row].length; column++) {
 				if (row == Game.getPlayer().getGalaxyPos().getX()
 						&& column == Game.getPlayer().getGalaxyPos().getY()) {
-					System.out.print("X  ");
-				} else if (theMap[row][column] == "S") {
-					System.out.print("S  ");
+					System.out.print(Player.MAP_KEY + "  ");
+				} else if (Objects.equals(theMap[row][column], Character.toString(Star.MAP_KEY))) {
+					System.out.print(Star.MAP_KEY + "  ");
+				} else if (Objects.equals(theMap[row][column], Character.toString(Planet.MAP_KEY))) {
+					System.out.print(Planet.MAP_KEY + "  ");
 				} else {
 					System.out.print(".  ");
 				}

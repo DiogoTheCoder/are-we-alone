@@ -56,7 +56,7 @@ public class Universe {
 			for (int column = 0; column < theMap[row].length; column++) {
 				if (row == Game.getPlayer().getUniversePos().getX()
 						&& column == Game.getPlayer().getUniversePos().getY()) {
-					System.out.print("X  ");
+					System.out.print(Player.MAP_KEY + "  ");
 				} else {
 					System.out.print(".  ");					
 				}
