@@ -22,8 +22,8 @@ public class Galaxy {
 	private void generate() {
 		int numOfSolarSystems = Universe.random.nextInt(Math.abs(Config.MAX_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY - Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY)) + Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY;
 		this.theMap = new String[Config.SIZE_OF_MAP][Config.SIZE_OF_MAP];
-		
-		int middle = Math.round(0 + (this.theMap.length - 0) / 2);
+
+		int middle = this.theMap.length / 2;
 		theMap[middle][middle] = "B";
 				
 		this.solarSystems = new SolarSystem[numOfSolarSystems];

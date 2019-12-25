@@ -1,5 +1,6 @@
 package com.diogothecoder.arewealone.map;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -13,7 +14,7 @@ public class SolarSystem {
 	private String[][] theMap;
 	private Star theStar;
 	private Planet[] planets;
-	
+
 	public SolarSystem() {
 		random = new Random();
 		generate();
@@ -28,38 +29,42 @@ public class SolarSystem {
 
 		this.theMap = new String[Config.SIZE_OF_MAP][Config.SIZE_OF_MAP];
 		this.planets = new Planet[numOfPlanets];
-		
+
+		for (String[] strings : this.theMap) {
+			Arrays.fill(strings, "");
+		}
+
 		this.theStar = new Star();
-		int middle = Math.round(0 + (this.theMap.length - 0) / 2);
+		int middle = this.theMap.length / 2;
 		theMap[middle][middle] = "S";
-		
+
 		for (int i = 0; i < planets.length; i++) {
 			this.planets[i] = new Planet();
-			
+
 			while (true) {
 				int randomLocationX = random.nextInt(this.theMap.length);
 				int randomLocationY = random.nextInt(this.theMap[randomLocationX].length);
-				
-				if (this.theMap[randomLocationX][randomLocationY] == null) {
+
+				if (this.theMap[randomLocationX][randomLocationY] == null || this.theMap[randomLocationX][randomLocationY].isEmpty()) {
 					this.theMap[randomLocationX][randomLocationY] = Character.toString(Planet.MAP_KEY);
 					break;
 				}
 			}
 		}
 	}
-	
+
 	public void displayMap() {
 		Console.clear();
 		for (int row = 0; row < theMap.length; row++) {
 			if (row <= 9) {
 				System.out.print("0" + row + " ");
 			} else {
-				System.out.print(row + " ");				
+				System.out.print(row + " ");
 			}
-			
+
 			for (int column = 0; column < theMap[row].length; column++) {
-				if (row == Game.getPlayer().getGalaxyPos().getX()
-						&& column == Game.getPlayer().getGalaxyPos().getY()) {
+				if (row == Game.getPlayer().getSolarSystemPos().getX()
+						&& column == Game.getPlayer().getSolarSystemPos().getY()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else if (Objects.equals(theMap[row][column], Character.toString(Star.MAP_KEY))) {
 					System.out.print(Star.MAP_KEY + "  ");
@@ -69,20 +74,32 @@ public class SolarSystem {
 					System.out.print(".  ");
 				}
 			}
-			
+
 			System.out.println();
 		}
-		
+
 		System.out.print("  ");
-		
+
 		for (int column = 0; column < theMap.length; column++) {
 			if (column <= 9) {
 				System.out.print(" " + column + " ");
 			} else {
-				System.out.print(column + " ");				
+				System.out.print(column + " ");
 			}
 		}
-		
+
 		System.out.println();
+	}
+
+	public String[][] getMap() {
+		return this.theMap;
+	}
+
+	boolean isStarAt(int x, int y) {
+		return Objects.equals(this.theMap[x][y], Character.toString(Star.MAP_KEY));
+	}
+
+	boolean isPlanetAt(int x, int y) {
+		return Objects.equals(this.theMap[x][y], Character.toString(Planet.MAP_KEY));
 	}
 }
