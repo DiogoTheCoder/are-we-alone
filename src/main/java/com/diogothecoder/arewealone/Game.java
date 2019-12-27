@@ -8,8 +8,8 @@ public class Game {
 	private static Player thePlayer;
 
 	public static void main(String[] args) {
-		theUniverse = new Universe();		
-		thePlayer = new Player();
+		theUniverse = Universe.getInstance();
+		thePlayer = Player.getInstance();
 
 		while (true) {
 			getUniverse().getGalaxy().getSolarSystem().display();

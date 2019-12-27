@@ -3,7 +3,6 @@ package com.diogothecoder.arewealone.actions;
 import com.diogothecoder.arewealone.Position;
 
 import java.lang.reflect.Method;
-import java.util.EnumMap;
 import java.util.LinkedHashMap;
 
 public class Navigation extends Action {

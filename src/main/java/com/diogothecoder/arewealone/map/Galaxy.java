@@ -11,7 +11,7 @@ import com.diogothecoder.arewealone.tools.Console;
 public class Galaxy extends Map {
 	private SolarSystem[] solarSystems;
 	
-	public void generateMap() {
+	protected void generateMap() {
 		int numOfSolarSystems = this.getRandomInt(Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, Config.MAX_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, true);
 
 		int middle = this.getMap().length / 2;

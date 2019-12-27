@@ -13,13 +13,23 @@ import com.diogothecoder.arewealone.tools.Logger;
  * and is in charge of generating our world!
  */
 public class Universe extends Map {
+	private static Universe instance;
+
 	private Galaxy[] galaxies;
+
+	public static Universe getInstance() {
+		if (instance == null) {
+			instance = new Universe();
+		}
+
+		return instance;
+	}
 	
-	public Universe() {
+	private Universe() {
 		Logger.Debug("Creating universe...");
 	}
 	
-	public void generateMap() {
+	protected void generateMap() {
 		this.galaxies = new Galaxy[Config.NUM_OF_GALAXIES];
 		for (int i = 0; i < galaxies.length; i++) {
 			this.galaxies[i] = new Galaxy();

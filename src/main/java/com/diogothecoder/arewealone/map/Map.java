@@ -12,8 +12,8 @@ abstract class Map {
         this.generateMap();
     }
 
-    abstract void generateMap();
-    abstract void display();
+    abstract protected void generateMap();
+    abstract public void display();
 
     public String[][] getMap() {
         return this.map;

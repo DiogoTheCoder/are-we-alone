@@ -1,6 +1,5 @@
 package com.diogothecoder.arewealone;
 
-import java.util.LinkedHashMap;
 import java.util.Random;
 
 import com.diogothecoder.arewealone.actions.Navigation;
@@ -8,6 +7,8 @@ import com.diogothecoder.arewealone.map.*;
 import com.diogothecoder.arewealone.tools.Logger;
 
 public class Player {
+	private static Player instance;
+
 	public static char MAP_KEY = 'X';
 
 	protected static Random random;
@@ -21,8 +22,16 @@ public class Player {
 	private SolarSystem currentSolarSystem;
 
 	private Navigation navigation;
+
+	public static Player getInstance() {
+		if (instance == null) {
+			instance = new Player();
+		}
+
+		return instance;
+	}
 	
-	public Player() {
+	private Player() {
 		Logger.Debug("Creating player...");
 		random = new Random();
 

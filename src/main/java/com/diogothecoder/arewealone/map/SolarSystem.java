@@ -17,7 +17,7 @@ public class SolarSystem extends Map {
 	 * Generating the Planets and Star for
 	 * the given Solar System.
 	 */
-	public void generateMap() {
+	protected void generateMap() {
 		int numOfPlanets = this.getRandomInt(Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS, Config.MAX_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS, true);
 		this.planets = new Planet[numOfPlanets];
 
