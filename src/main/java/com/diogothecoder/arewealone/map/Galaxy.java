@@ -8,54 +8,45 @@ import com.diogothecoder.arewealone.Player;
 import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.tools.Console;
 
-public class Galaxy {
-	protected static Random random;
-
-	private String[][] theMap;
+public class Galaxy extends Map {
 	private SolarSystem[] solarSystems;
 	
-	public Galaxy() {
-		random = new Random();
-		generate();
-	}
-	
-	private void generate() {
-		int numOfSolarSystems = Universe.random.nextInt(Math.abs(Config.MAX_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY - Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY)) + Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY;
-		this.theMap = new String[Config.SIZE_OF_MAP][Config.SIZE_OF_MAP];
+	public void generateMap() {
+		int numOfSolarSystems = this.getRandomInt(Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, Config.MAX_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, true);
 
-		int middle = this.theMap.length / 2;
-		theMap[middle][middle] = "B";
+		int middle = this.getMap().length / 2;
+		this.getMap()[middle][middle] = "B";
 				
 		this.solarSystems = new SolarSystem[numOfSolarSystems];
 		for (int i = 0; i < solarSystems.length; i++) {
 			this.solarSystems[i] = new SolarSystem();
 			
 			while (true) {
-				int randomLocationX = random.nextInt(this.theMap.length);
-				int randomLocationY = random.nextInt(this.theMap[randomLocationX].length);
+				int randomLocationX = this.getRandomInt(this.getMap().length, false);
+				int randomLocationY = this.getRandomInt(this.getMap()[randomLocationX].length, false);
 				
-				if (this.theMap[randomLocationX][randomLocationY] == null) {
-					this.theMap[randomLocationX][randomLocationY] = Integer.toString(i);
+				if (this.getMap()[randomLocationX][randomLocationY] == null) {
+					this.getMap()[randomLocationX][randomLocationY] = Integer.toString(i);
 					break;
 				}
 			}
 		}
 	}
 	
-	public void displayMap() {
+	public void display() {
 		Console.clear();
-		for (int row = 0; row < theMap.length; row++) {
+		for (int row = 0; row < this.getMap().length; row++) {
 			if (row <= 9) {
 				System.out.print("0" + row + " ");
 			} else {
 				System.out.print(row + " ");				
 			}
 			
-			for (int column = 0; column < theMap[row].length; column++) {
+			for (int column = 0; column < this.getMap()[row].length; column++) {
 				if (row == Game.getPlayer().getGalaxyPos().getY()
 						&& column == Game.getPlayer().getGalaxyPos().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
-				} else if (Objects.equals(theMap[row][column], "B")) {
+				} else if (Objects.equals(this.getMap()[row][column], "B")) {
 					System.out.print("B  ");
 				} else {
 					System.out.print(".  ");
@@ -67,7 +58,7 @@ public class Galaxy {
 		
 		System.out.print("  ");
 		
-		for (int column = 0; column < theMap.length; column++) {
+		for (int column = 0; column < this.getMap().length; column++) {
 			if (column <= 9) {
 				System.out.print(" " + column + " ");
 			} else {
@@ -79,19 +70,15 @@ public class Galaxy {
 	}
 	
 	public SolarSystem getSolarSystem(Position galaxyPosition) {
-		String index = this.theMap[galaxyPosition.getX()][galaxyPosition.getY()];				
+		String index = this.getMap()[galaxyPosition.getX()][galaxyPosition.getY()];
 		return this.solarSystems[Integer.parseInt(index)];
 	}
 	
 	public SolarSystem getSolarSystem() {
 		Position currentPlayerPosition = Game.getPlayer().getGalaxyPos().getPosition();
-		String index = this.theMap[currentPlayerPosition.getX()][currentPlayerPosition.getY()];
+		String index = this.getMap()[currentPlayerPosition.getX()][currentPlayerPosition.getY()];
 		
 		return this.solarSystems[Integer.parseInt(index)];
 	}
-	
-	public String[][] getMap() {
-		return this.theMap;
-	}
-	
+
 }

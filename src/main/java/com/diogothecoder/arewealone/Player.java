@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.diogothecoder.arewealone.map.*;
 import com.diogothecoder.arewealone.tools.Logger;
-import javafx.geometry.Pos;
 
 public class Player {
 	public static char MAP_KEY = 'X';
@@ -109,21 +108,5 @@ public class Player {
 		}
 
 		return navigationOptions;
-	}
-
-	protected void goNorth() {
-		this.solarSystemPosition = new Position(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1);
-	}
-
-	protected void goEast() {
-		this.solarSystemPosition = new Position(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY());
-	}
-
-	protected void goSouth() {
-		this.solarSystemPosition = new Position(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1);
-	}
-
-	protected void goWest() {
-		this.solarSystemPosition = new Position(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY());
 	}
 }

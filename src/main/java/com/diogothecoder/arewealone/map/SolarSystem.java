@@ -9,67 +9,57 @@ import com.diogothecoder.arewealone.Player;
 import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.tools.Console;
 
-public class SolarSystem {
-	protected static Random random;
-
-	private String[][] theMap;
+public class SolarSystem extends Map {
 	private Star theStar;
 	private Planet[] planets;
-
-	public SolarSystem() {
-		random = new Random();
-		generate();
-	}
 
 	/**
 	 * Generating the Planets and Star for
 	 * the given Solar System.
 	 */
-	private void generate() {
-		int numOfPlanets = Universe.random.nextInt(Math.abs(Config.MAX_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS - Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS)) + Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS;
-
-		this.theMap = new String[Config.SIZE_OF_MAP][Config.SIZE_OF_MAP];
+	public void generateMap() {
+		int numOfPlanets = this.getRandomInt(Config.MIN_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS, Config.MAX_NUM_OF_PLANETS_PER_SOLAR_SYSTEMS, true);
 		this.planets = new Planet[numOfPlanets];
 
-		for (String[] strings : this.theMap) {
+		for (String[] strings : this.getMap()) {
 			Arrays.fill(strings, "");
 		}
 
 		this.theStar = new Star();
-		int middle = this.theMap.length / 2;
-		theMap[middle][middle] = "S";
+		int middle = this.getMap().length / 2;
+		this.getMap()[middle][middle] = "S";
 
 		for (int i = 0; i < planets.length; i++) {
 			this.planets[i] = new Planet();
 
 			while (true) {
-				int randomLocationX = random.nextInt(this.theMap.length);
-				int randomLocationY = random.nextInt(this.theMap[randomLocationX].length);
+				int randomLocationX = this.getRandomInt(this.getMap().length, false);
+				int randomLocationY = this.getRandomInt(this.getMap()[randomLocationX].length, false);
 
-				if (this.theMap[randomLocationX][randomLocationY] == null || this.theMap[randomLocationX][randomLocationY].isEmpty()) {
-					this.theMap[randomLocationX][randomLocationY] = Character.toString(Planet.MAP_KEY);
+				if (this.getMap()[randomLocationX][randomLocationY] == null || this.getMap()[randomLocationX][randomLocationY].isEmpty()) {
+					this.getMap()[randomLocationX][randomLocationY] = Character.toString(Planet.MAP_KEY);
 					break;
 				}
 			}
 		}
 	}
 
-	public void displayMap() {
+	public void display() {
 		Console.clear();
-		for (int row = 0; row < theMap.length; row++) {
+		for (int row = 0; row < this.getMap().length; row++) {
 			if (row <= 9) {
 				System.out.print("0" + row + " ");
 			} else {
 				System.out.print(row + " ");
 			}
 
-			for (int column = 0; column < theMap[row].length; column++) {
+			for (int column = 0; column < this.getMap()[row].length; column++) {
 				if (row == Game.getPlayer().getSolarSystemPos().getY()
 						&& column == Game.getPlayer().getSolarSystemPos().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
-				} else if (Objects.equals(theMap[row][column], Character.toString(Star.MAP_KEY))) {
+				} else if (Objects.equals(this.getMap()[row][column], Character.toString(Star.MAP_KEY))) {
 					System.out.print(Star.MAP_KEY + "  ");
-				} else if (Objects.equals(theMap[row][column], Character.toString(Planet.MAP_KEY))) {
+				} else if (Objects.equals(this.getMap()[row][column], Character.toString(Planet.MAP_KEY))) {
 					System.out.print(Planet.MAP_KEY + "  ");
 				} else {
 					System.out.print(".  ");
@@ -81,7 +71,7 @@ public class SolarSystem {
 
 		System.out.print("  ");
 
-		for (int column = 0; column < theMap.length; column++) {
+		for (int column = 0; column < this.getMap().length; column++) {
 			if (column <= 9) {
 				System.out.print(" " + column + " ");
 			} else {
@@ -92,13 +82,17 @@ public class SolarSystem {
 		System.out.println();
 	}
 
-	public String[][] getMap() {
-		return this.theMap;
+	public Star getStar() {
+		return this.theStar;
+	}
+
+	public Planet[] getPlanets() {
+		return this.planets;
 	}
 
 	private String getAtPos(Position position) {
 		try {
-			return this.theMap[position.getX()][position.getY()];
+			return this.getMap()[position.getX()][position.getY()];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// We have attempted to go outside the Solar System
 			// TODO: allow this to happen

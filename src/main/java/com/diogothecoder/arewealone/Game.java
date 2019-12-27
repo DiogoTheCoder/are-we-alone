@@ -12,7 +12,7 @@ public class Game {
 		thePlayer = new Player();
 
 		while (true) {
-			getUniverse().getGalaxy().getSolarSystem().displayMap();
+			getUniverse().getGalaxy().getSolarSystem().display();
 
 			displayPossibleActions();
 			executeAction(Console.getUserInput());
@@ -45,16 +45,16 @@ public class Game {
 				thePlayer.goNorth();
 				break;
 			case "E":
-				thePlayer.goEast();
 				System.out.println("Eastwards we go!");
+				thePlayer.goEast();
 				break;
 			case "S":
-				thePlayer.goSouth();
 				System.out.println("Southwards we go!");
+				thePlayer.goSouth();
 				break;
 			case "W":
-				thePlayer.goWest();
 				System.out.println("Westwards we go!");
+				thePlayer.goWest();
 				break;
 		}
 	}
