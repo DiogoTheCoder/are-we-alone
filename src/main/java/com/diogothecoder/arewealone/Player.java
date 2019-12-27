@@ -3,6 +3,7 @@ package com.diogothecoder.arewealone;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
+import com.diogothecoder.arewealone.actions.Navigation;
 import com.diogothecoder.arewealone.map.*;
 import com.diogothecoder.arewealone.tools.Logger;
 
@@ -18,6 +19,8 @@ public class Player {
 	private Universe currentUniverse;
 	private Galaxy currentGalaxy;
 	private SolarSystem currentSolarSystem;
+
+	private Navigation navigation;
 	
 	public Player() {
 		Logger.Debug("Creating player...");
@@ -44,6 +47,8 @@ public class Player {
 		}
 
 		this.solarSystemPosition = getRandomPos(this.currentSolarSystem.getMap());
+
+		this.navigation = new Navigation();
 	}
 	
 	private Position getRandomPos(String[][] map) {
@@ -77,36 +82,30 @@ public class Player {
 		Logger.Info("The Player is at Coordinate (X, Y): (" + pos.getX() + ", " + pos.getY() + ")");
 	}
 
-	/**
-	 * Return an array of the possible navigation options for the Player
-	 * i.e. {'N', 'E', 'S', W}
-	 *
-	 * @return navigationOptions
-	 */
-	protected LinkedHashMap<Character, String> getNavigationOptions() {
-		// We use LinkedHashMap and not just regular HashMap, so we can maintain the insertion order
-		LinkedHashMap<Character, String> navigationOptions = new LinkedHashMap<>();
-
-		// Is there anything North of us?
-		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1)) {
-			navigationOptions.put('N', "Accelerate Northwards");
-		}
-
-		// What about East?
-		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY())) {
-			navigationOptions.put('E', "Accelerate Eastwards");
-		}
-
-		// And how about South?
-		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1)) {
-			navigationOptions.put('S', "Accelerate Southwards");
-		}
-
-		// Finally, what about West?
-		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY())) {
-			navigationOptions.put('W', "Accelerate Westwards");
-		}
-
-		return navigationOptions;
+	protected Navigation getNavigation() {
+		return this.navigation;
+//		LinkedHashMap<Character, String> navigationOptions = new LinkedHashMap<>();
+//
+//		// Is there anything North of us?
+//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1)) {
+//			navigationOptions.put('N', "Accelerate Northwards");
+//		}
+//
+//		// What about East?
+//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY())) {
+//			navigationOptions.put('E', "Accelerate Eastwards");
+//		}
+//
+//		// And how about South?
+//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1)) {
+//			navigationOptions.put('S', "Accelerate Southwards");
+//		}
+//
+//		// Finally, what about West?
+//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY())) {
+//			navigationOptions.put('W', "Accelerate Westwards");
+//		}
+//
+//		return navigationOptions;
 	}
 }
