@@ -5,6 +5,7 @@ import java.util.Random;
 import com.diogothecoder.arewealone.actions.Navigation;
 import com.diogothecoder.arewealone.map.*;
 import com.diogothecoder.arewealone.tools.Logger;
+import com.diogothecoder.arewealone.tools.exceptions.MapNotFound;
 
 public class Player {
 	private static Player instance;
@@ -12,50 +13,52 @@ public class Player {
 	public static char MAP_KEY = 'X';
 
 	protected static Random random;
-	
-	private Position universePosition;
-	private Position galaxyPosition;
-	private Position solarSystemPosition;
-
-	private Universe currentUniverse;
-	private Galaxy currentGalaxy;
-	private SolarSystem currentSolarSystem;
 
 	private Navigation navigation;
 
 	public static Player getInstance() {
 		if (instance == null) {
-			instance = new Player();
+			try {
+				instance = new Player();
+			} catch (MapNotFound mapNotFound) {
+				mapNotFound.printStackTrace();
+			}
 		}
 
 		return instance;
 	}
 	
-	private Player() {
+	private Player() throws MapNotFound {
 		Logger.Debug("Creating player...");
 		random = new Random();
 
-		this.currentUniverse = Game.getUniverse();
-		if (this.currentUniverse == null) {
-			Logger.Error("Cannot find universe!");
-			return;
+		Universe currentUniverse = Game.getUniverse();
+		if (currentUniverse == null) {
+			throw new MapNotFound();
 		}
 
-		this.universePosition = getRandomPos(this.currentUniverse.getMap());
-		this.currentGalaxy = this.currentUniverse.getGalaxy(this.universePosition);
-		if (this.currentUniverse == null) {
-			Logger.Error("Cannot find galaxy!");
-			return;
+		Position universePosition = getRandomPos(currentUniverse.getMap());
+		Game.getUniverse().setPlayerPosition(universePosition);
+
+		currentUniverse = Game.getUniverse();
+
+		Galaxy currentGalaxy = currentUniverse.getGalaxy(universePosition);
+		if (currentGalaxy == null) {
+			throw new MapNotFound();
 		}
 
-		this.galaxyPosition = getRandomPos(this.currentGalaxy.getMap());
-		this.currentSolarSystem = this.currentGalaxy.getSolarSystem(this.galaxyPosition);
-		if (this.currentUniverse == null) {
-			Logger.Error("Cannot find solar system!");
-			return;
+		Position galaxyPosition = getRandomPos(currentGalaxy.getMap());
+		Game.getUniverse().getGalaxy(universePosition).setPlayerPosition(galaxyPosition);
+
+		currentGalaxy = Game.getUniverse().getGalaxy(universePosition);
+
+		SolarSystem currentSolarSystem = currentGalaxy.getSolarSystem(galaxyPosition);
+		if (currentSolarSystem == null) {
+			throw new MapNotFound();
 		}
 
-		this.solarSystemPosition = getRandomPos(this.currentSolarSystem.getMap());
+		Position solarSystemPosition = getRandomPos(currentSolarSystem.getMap());
+		Game.getUniverse().getGalaxy(universePosition).getSolarSystem(galaxyPosition).setPlayerPosition(solarSystemPosition);
 
 		this.navigation = new Navigation();
 	}
@@ -73,18 +76,6 @@ public class Player {
 				return new Position(randomPosX, randomPosY);
 			}
 		}
-	}
-
-	public Position getUniversePos() {
-		return this.universePosition;
-	}
-	
-	public Position getGalaxyPos() {
-		return this.galaxyPosition;
-	}
-
-	public Position getSolarSystemPos() {
-		return this.solarSystemPosition;
 	}
 	
 	public void displayPos(Position pos) {

@@ -1,10 +1,13 @@
 package com.diogothecoder.arewealone.map;
 
+import com.diogothecoder.arewealone.Position;
+
 import java.util.Random;
 
-abstract class Map {
+abstract public class Map {
     private Random random;
     private String[][] map;
+    private Position playerPosition;
 
     Map() {
         this.random = new Random();
@@ -33,5 +36,13 @@ abstract class Map {
         }
 
         return this.random.nextInt(max - min) + min;
+    }
+
+    public void setPlayerPosition(Position playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
+    public Position getPlayerPosition() {
+        return this.playerPosition;
     }
 }

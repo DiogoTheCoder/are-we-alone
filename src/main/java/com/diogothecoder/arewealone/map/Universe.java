@@ -1,7 +1,5 @@
 package com.diogothecoder.arewealone.map;
 
-import java.util.Random;
-
 import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Player;
 import com.diogothecoder.arewealone.Position;
@@ -56,8 +54,8 @@ public class Universe extends Map {
 			}
 			
 			for (int column = 0; column < this.getMap()[row].length; column++) {
-				if (row == Game.getPlayer().getUniversePos().getY()
-						&& column == Game.getPlayer().getUniversePos().getX()) {
+				if (row == Game.getUniverse().getPlayerPosition().getY()
+						&& column == Game.getUniverse().getPlayerPosition().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else {
 					System.out.print(".  ");					
@@ -86,7 +84,7 @@ public class Universe extends Map {
 	}
 	
 	public Galaxy getGalaxy() {
-		Position currentPlayerPosition = Game.getPlayer().getUniversePos().getPosition();
+		Position currentPlayerPosition = Game.getUniverse().getPlayerPosition();
 		String index = this.getMap()[currentPlayerPosition.getX()][currentPlayerPosition.getY()];
 				
 		return this.galaxies[Integer.parseInt(index)];

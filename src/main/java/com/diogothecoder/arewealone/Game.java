@@ -28,7 +28,7 @@ public class Game {
 	}
 
 	private static void displayPossibleActions() {
-		thePlayer.getNavigation().getAll();
+		// thePlayer.getNavigation().getPossibleActions();
 	}
 
 //	private static void displayNavigationOptions() {
