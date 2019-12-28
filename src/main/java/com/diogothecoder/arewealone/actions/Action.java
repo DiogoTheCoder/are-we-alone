@@ -14,7 +14,27 @@ abstract class Action {
     public LinkedHashMap<Enum<?>, Method> getAll() {
         return this.ACTIONS;
     }
-    public LinkedHashMap<Enum<?>, Method> getPossibleActions() {
+    private LinkedHashMap<Enum<?>, Method> getPossibleActions() throws NoSuchMethodException {
+        if (this.ACTIONS == null) {
+            this.ACTIONS = this.getAll();
+        }
+
         return this.ACTIONS;
+    }
+
+    public void displayPossibleActions() {
+        try {
+            System.out.println();
+            this.getPossibleActions().forEach((key, value) -> System.out.println(key + " --> " + value));
+            System.out.println();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void displayPossibleActions(LinkedHashMap<Enum<?>, Method> actions) {
+        System.out.println();
+        actions.forEach((key, value) -> System.out.println(key + " --> " + value));
+        System.out.println();
     }
 }

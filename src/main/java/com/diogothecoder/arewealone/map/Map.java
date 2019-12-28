@@ -45,4 +45,18 @@ abstract public class Map {
     public Position getPlayerPosition() {
         return this.playerPosition;
     }
+
+    private String getAtPos(Position position) {
+        try {
+            return this.getMap()[position.getX()][position.getY()];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // We have attempted to go outside the Solar System
+            // TODO: allow this to happen
+            return e.getMessage();
+        }
+    }
+
+    public boolean isEmptyAt(int x, int y) {
+        return this.getAtPos(new Position(x, y)).isEmpty();
+    }
 }

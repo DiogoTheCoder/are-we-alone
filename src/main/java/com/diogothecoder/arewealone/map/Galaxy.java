@@ -43,8 +43,8 @@ public class Galaxy extends Map {
 			}
 			
 			for (int column = 0; column < this.getMap()[row].length; column++) {
-				if (row == Game.getPlayer().getGalaxyPos().getY()
-						&& column == Game.getPlayer().getGalaxyPos().getX()) {
+				if (row == Game.getUniverse().getGalaxy().getPlayerPosition().getY()
+						&& column == Game.getUniverse().getGalaxy().getPlayerPosition().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else if (Objects.equals(this.getMap()[row][column], "B")) {
 					System.out.print("B  ");
@@ -75,7 +75,7 @@ public class Galaxy extends Map {
 	}
 	
 	public SolarSystem getSolarSystem() {
-		Position currentPlayerPosition = Game.getPlayer().getGalaxyPos().getPosition();
+		Position currentPlayerPosition = Game.getUniverse().getGalaxy().getPlayerPosition();
 		String index = this.getMap()[currentPlayerPosition.getX()][currentPlayerPosition.getY()];
 		
 		return this.solarSystems[Integer.parseInt(index)];

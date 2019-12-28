@@ -1,8 +1,8 @@
 package com.diogothecoder.arewealone.actions;
 
+import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.map.Map;
-import com.diogothecoder.arewealone.tools.exceptions.MapNotFound;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -19,35 +19,56 @@ public class Navigation extends Action {
         super(actions);
     }
 
-    public LinkedHashMap<Enum<?>, Method> getPossibleActions(Map map, Position currentPosition) throws MapNotFound {
-        String[][] theMap = map.getMap();
-        if (theMap == null) {
-            throw new MapNotFound();
+    public LinkedHashMap<Enum<?>, Method> getPossibleActions() throws NoSuchMethodException {
+        Position currentPlayerPosition = null;
+
+        // Where are we? In a Solar System or between Solar Systems, or between Galaxies?
+        Map currentMap = Game.getUniverse().getGalaxy().getSolarSystem();
+        if (currentMap != null) {
+            currentPlayerPosition = currentMap.getPlayerPosition();
+        }
+
+        if (currentPlayerPosition == null) {
+            throw new NullPointerException("currentPlayerPosition is null!");
         }
 
         LinkedHashMap<Enum<?>, Method> navigationOptions = new LinkedHashMap<>();
 
-//        // Is there anything North of us?
-//        if (theMap. this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1)) {
-//            navigationOptions.put('N', "Accelerate Northwards");
-//        }
-//
-//        // What about East?
-//        if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY())) {
-//            navigationOptions.put('E', "Accelerate Eastwards");
-//        }
-//
-//        // And how about South?
-//        if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1)) {
-//            navigationOptions.put('S', "Accelerate Southwards");
-//        }
-//
-//        // Finally, what about West?
-//        if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY())) {
-//            navigationOptions.put('W', "Accelerate Westwards");
-//        }
+        // Is there anything North of us?
+        if (currentMap.isEmptyAt(currentPlayerPosition.getX(), currentPlayerPosition.getY() - 1)) {
+            navigationOptions.put(NavigationEnum.NORTH, this.getClass().getDeclaredMethod("goNorth", Position.class));
+        }
 
-        return navigationOptions;
+        // What about East?
+        if (currentMap.isEmptyAt(currentPlayerPosition.getX() + 1, currentPlayerPosition.getY())) {
+            navigationOptions.put(NavigationEnum.EAST, this.getClass().getDeclaredMethod("goEast", Position.class));
+        }
+
+        // And how about South?
+        if (currentMap.isEmptyAt(currentPlayerPosition.getX(), currentPlayerPosition.getY() + 1)) {
+            navigationOptions.put(NavigationEnum.SOUTH, this.getClass().getDeclaredMethod("goSouth", Position.class));
+        }
+
+        // Finally, what about West?
+        if (currentMap.isEmptyAt(currentPlayerPosition.getX() - 1, currentPlayerPosition.getY())) {
+            navigationOptions.put(NavigationEnum.WEST, this.getClass().getDeclaredMethod("goWest", Position.class));
+        }
+
+        this.ACTIONS = navigationOptions;
+
+        return this.ACTIONS;
+    }
+
+    public void displayPossibleActions() {
+        try {
+            System.out.println();
+            for (Enum<?> navigationEnum : this.getPossibleActions().keySet()) {
+                System.out.println(navigationEnum.name() + " --> " + ((NavigationEnum) navigationEnum).getValue());
+            }
+            System.out.println();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     public LinkedHashMap<Enum<?>, Method> getAll() {

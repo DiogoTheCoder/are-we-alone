@@ -54,8 +54,8 @@ public class SolarSystem extends Map {
 			}
 
 			for (int column = 0; column < this.getMap()[row].length; column++) {
-				if (row == Game.getPlayer().getSolarSystemPos().getY()
-						&& column == Game.getPlayer().getSolarSystemPos().getX()) {
+				if (row == Game.getUniverse().getGalaxy().getSolarSystem().getPlayerPosition().getY()
+						&& column == Game.getUniverse().getGalaxy().getSolarSystem().getPlayerPosition().getX()) {
 					System.out.print(Player.MAP_KEY + "  ");
 				} else if (Objects.equals(this.getMap()[row][column], Character.toString(Star.MAP_KEY))) {
 					System.out.print(Star.MAP_KEY + "  ");
@@ -88,19 +88,5 @@ public class SolarSystem extends Map {
 
 	public Planet[] getPlanets() {
 		return this.planets;
-	}
-
-	private String getAtPos(Position position) {
-		try {
-			return this.getMap()[position.getX()][position.getY()];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			// We have attempted to go outside the Solar System
-			// TODO: allow this to happen
-			return e.getMessage();
-		}
-	}
-
-	public boolean isEmptyAt(int x, int y) {
-		return this.getAtPos(new Position(x, y)).isEmpty();
 	}
 }

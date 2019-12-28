@@ -1,5 +1,6 @@
 package com.diogothecoder.arewealone;
 
+import com.diogothecoder.arewealone.actions.Navigation;
 import com.diogothecoder.arewealone.map.Universe;
 import com.diogothecoder.arewealone.tools.Console;
 
@@ -11,12 +12,16 @@ public class Game {
 		theUniverse = Universe.getInstance();
 		thePlayer = Player.getInstance();
 
-		while (true) {
-			getUniverse().getGalaxy().getSolarSystem().display();
+		getUniverse().getGalaxy().getSolarSystem().display();
+		thePlayer.getNavigation().displayPossibleActions();
 
-			displayPossibleActions();
-			// executeAction(Console.getUserInput());
-		}
+//		while (true) {
+//			getUniverse().getGalaxy().getSolarSystem().display();
+//
+//			thePlayer.getNavigation().displayPossibleActions();
+//			// displayPossibleActions();
+//			// executeAction(Console.getUserInput());
+//		}
 	}
 	
 	public static Universe getUniverse() {
@@ -25,10 +30,6 @@ public class Game {
 	
 	public static Player getPlayer() {
 		return thePlayer;
-	}
-
-	private static void displayPossibleActions() {
-		// thePlayer.getNavigation().getPossibleActions();
 	}
 
 //	private static void displayNavigationOptions() {
