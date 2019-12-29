@@ -1,5 +1,6 @@
 package com.diogothecoder.arewealone.map;
 
+import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Position;
 
 import java.util.Random;
@@ -58,5 +59,21 @@ abstract public class Map {
 
     public boolean isEmptyAt(int x, int y) {
         return this.getAtPos(new Position(x, y)).isEmpty();
+    }
+
+    public static Map getCurrentMap() {
+        Universe universe = Game.getUniverse();
+
+        Galaxy galaxy = universe.getGalaxy();
+        if (galaxy == null) {
+            return universe;
+        }
+
+        SolarSystem solarSystem = galaxy.getSolarSystem();
+        if (solarSystem == null) {
+            return galaxy;
+        }
+
+        return solarSystem;
     }
 }

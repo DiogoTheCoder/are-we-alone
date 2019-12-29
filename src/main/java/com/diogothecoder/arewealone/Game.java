@@ -2,6 +2,7 @@ package com.diogothecoder.arewealone;
 
 import com.diogothecoder.arewealone.actions.Action;
 import com.diogothecoder.arewealone.actions.ActionEnum;
+import com.diogothecoder.arewealone.map.Map;
 import com.diogothecoder.arewealone.map.Universe;
 
 import java.lang.reflect.Method;
@@ -22,6 +23,8 @@ public class Game {
 			getUniverse().getGalaxy().getSolarSystem().display();
 
 			try {
+				Map.getCurrentMap().getPlayerPosition().display();
+
 				LinkedHashMap<ActionEnum, Method> actions = getPlayer().getNavigation().getPossibleActions();
 				Action.displayPossibleActions(actions);
 

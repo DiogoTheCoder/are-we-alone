@@ -1,5 +1,7 @@
 package com.diogothecoder.arewealone;
 
+import com.diogothecoder.arewealone.tools.Logger;
+
 public class Position {
 	int x;
 	int y;
@@ -17,7 +19,8 @@ public class Position {
 		return this.y;
 	}
 	
-	public Position getPosition() {
-		return this;
+	public void display() {
+		System.out.println();
+		Logger.Info("The Player is at Coordinate (X, Y): (" + this.getX() + ", " + this.getY() + ")", false);
 	}
 }

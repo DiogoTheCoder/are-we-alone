@@ -106,47 +106,31 @@ public class Navigation extends Action {
     }
 
     protected void goNorth() {
-        Map currentMap = getCurrentMap();
+        Map currentMap = Map.getCurrentMap();
         Position currentPosition = currentMap.getPlayerPosition();
 
         currentMap.setPlayerPosition(new Position(currentPosition.getX(), currentPosition.getY() - 1));
     }
 
     protected void goEast() {
-        Map currentMap = getCurrentMap();
+        Map currentMap = Map.getCurrentMap();
         Position currentPosition = currentMap.getPlayerPosition();
 
         currentMap.setPlayerPosition(new Position(currentPosition.getX() + 1, currentPosition.getY()));
     }
 
     protected void goSouth() {
-        Map currentMap = getCurrentMap();
+        Map currentMap = Map.getCurrentMap();
         Position currentPosition = currentMap.getPlayerPosition();
 
         currentMap.setPlayerPosition(new Position(currentPosition.getX(), currentPosition.getY() + 1));
     }
 
     protected void goWest() {
-        Map currentMap = getCurrentMap();
+        Map currentMap = Map.getCurrentMap();
         Position currentPosition = currentMap.getPlayerPosition();
 
         currentMap.setPlayerPosition(new Position(currentPosition.getX() - 1, currentPosition.getY()));
-    }
-
-    private Map getCurrentMap() {
-        Universe universe = Game.getUniverse();
-
-        Galaxy galaxy = universe.getGalaxy();
-        if (galaxy == null) {
-            return universe;
-        }
-
-        SolarSystem solarSystem = galaxy.getSolarSystem();
-        if (solarSystem == null) {
-            return galaxy;
-        }
-
-        return solarSystem;
     }
 }
 

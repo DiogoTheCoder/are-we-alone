@@ -77,10 +77,6 @@ public class Player {
 			}
 		}
 	}
-	
-	public void displayPos(Position pos) {
-		Logger.Info("The Player is at Coordinate (X, Y): (" + pos.getX() + ", " + pos.getY() + ")");
-	}
 
 	public Navigation getNavigation() {
 		return this.navigation;

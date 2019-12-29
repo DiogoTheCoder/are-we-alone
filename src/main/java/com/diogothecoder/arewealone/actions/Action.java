@@ -2,6 +2,7 @@ package com.diogothecoder.arewealone.actions;
 
 import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.tools.Console;
+import com.diogothecoder.arewealone.tools.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,7 +32,7 @@ abstract public class Action {
     public void displayPossibleActions() {
         try {
             System.out.println();
-            this.getPossibleActions().forEach((key, value) -> System.out.println(key + " --> " + value));
+            this.getPossibleActions().forEach((key, value) -> Logger.Info(key.getKey() + " --> " + key.getValue(), false));
             System.out.println();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -40,7 +41,7 @@ abstract public class Action {
 
     public static void displayPossibleActions(LinkedHashMap<ActionEnum, Method> actions) {
         System.out.println();
-        actions.forEach((key, value) -> System.out.println(key.getKey() + " --> " + key.getValue()));
+        actions.forEach((key, value) -> Logger.Info(key.getKey() + " --> " + key.getValue(), false));
         System.out.println();
     }
 
@@ -73,6 +74,10 @@ abstract public class Action {
             if (actionFound.get()) {
                 break;
             }
+        }
+
+        if (!actionFound.get()) {
+            Logger.Info("Sorry, but that seems to be an invalid action, please try again.", false);
         }
     }
 }
