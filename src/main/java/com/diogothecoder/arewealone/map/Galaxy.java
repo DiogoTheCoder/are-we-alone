@@ -1,5 +1,6 @@
 package com.diogothecoder.arewealone.map;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -12,6 +13,10 @@ public class Galaxy extends Map {
 	private SolarSystem[] solarSystems;
 	
 	protected void generateMap() {
+		for (String[] strings : this.getMap()) {
+			Arrays.fill(strings, "");
+		}
+
 		int numOfSolarSystems = this.getRandomInt(Config.MIN_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, Config.MAX_NUM_OF_SOLAR_SYSTEMS_PER_GALAXY, true);
 
 		int middle = this.getMap().length / 2;
@@ -24,8 +29,8 @@ public class Galaxy extends Map {
 			while (true) {
 				int randomLocationX = this.getRandomInt(1, this.getMap().length - 1, false);
 				int randomLocationY = this.getRandomInt(1, this.getMap()[randomLocationX].length - 1, false);
-				
-				if (this.getMap()[randomLocationX][randomLocationY] == null) {
+
+				if (this.getMap()[randomLocationX][randomLocationY] == null || this.getMap()[randomLocationX][randomLocationY].isEmpty()) {
 					this.getMap()[randomLocationX][randomLocationY] = Integer.toString(i);
 					break;
 				}
@@ -77,8 +82,13 @@ public class Galaxy extends Map {
 	public SolarSystem getSolarSystem() {
 		Position currentPlayerPosition = Game.getUniverse().getGalaxy().getPlayerPosition();
 		String index = this.getMap()[currentPlayerPosition.getX()][currentPlayerPosition.getY()];
-		
-		return this.solarSystems[Integer.parseInt(index)];
+
+		try {
+			return this.solarSystems[Integer.parseInt(index)];
+		} catch (NumberFormatException e) {
+			// We have moved away from the Solar System
+			return null;
+		}
 	}
 
 }

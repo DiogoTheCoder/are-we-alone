@@ -37,7 +37,7 @@ public class Player {
 			throw new MapNotFound();
 		}
 
-		Position universePosition = getRandomPos(currentUniverse.getMap());
+		Position universePosition = getRandomPos(currentUniverse.getMap(), false);
 		Game.getUniverse().setPlayerPosition(universePosition);
 
 		currentUniverse = Game.getUniverse();
@@ -47,7 +47,7 @@ public class Player {
 			throw new MapNotFound();
 		}
 
-		Position galaxyPosition = getRandomPos(currentGalaxy.getMap());
+		Position galaxyPosition = getRandomPos(currentGalaxy.getMap(), false);
 		Game.getUniverse().getGalaxy(universePosition).setPlayerPosition(galaxyPosition);
 
 		currentGalaxy = Game.getUniverse().getGalaxy(universePosition);
@@ -57,18 +57,19 @@ public class Player {
 			throw new MapNotFound();
 		}
 
-		Position solarSystemPosition = getRandomPos(currentSolarSystem.getMap());
+		Position solarSystemPosition = getRandomPos(currentSolarSystem.getMap(), true);
 		Game.getUniverse().getGalaxy(universePosition).getSolarSystem(galaxyPosition).setPlayerPosition(solarSystemPosition);
 
 		this.navigation = new Navigation();
 	}
 	
-	private Position getRandomPos(String[][] map) {
+	private Position getRandomPos(String[][] map, boolean isEmpty) {
 		while (true) {
 			int randomPosX = random.nextInt(map.length);
 			int randomPosY = random.nextInt(map.length);
 			
 			if (map[randomPosX][randomPosY] != null
+					&& map[randomPosX][randomPosY].isEmpty() == isEmpty
 					&& !map[randomPosX][randomPosY].equals("B")
 					&& !map[randomPosX][randomPosY].equals(Character.toString(Star.MAP_KEY))
 					&& !map[randomPosX][randomPosY].equals(Character.toString(Planet.MAP_KEY))

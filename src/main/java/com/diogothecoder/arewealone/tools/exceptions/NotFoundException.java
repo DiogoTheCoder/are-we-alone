@@ -1,6 +1,6 @@
 package com.diogothecoder.arewealone.tools.exceptions;
 
-class NotFoundException extends Exception {
-    protected NotFoundException() { super(); }
-    protected NotFoundException(String message) { super(message); }
+public class NotFoundException extends Exception {
+    public NotFoundException() { super(); }
+    public NotFoundException(String message) { super(message); }
 }

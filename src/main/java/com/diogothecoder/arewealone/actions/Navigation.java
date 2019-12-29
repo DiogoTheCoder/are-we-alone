@@ -2,10 +2,12 @@ package com.diogothecoder.arewealone.actions;
 
 import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Position;
+import com.diogothecoder.arewealone.map.Config;
 import com.diogothecoder.arewealone.map.Galaxy;
 import com.diogothecoder.arewealone.map.Map;
 import com.diogothecoder.arewealone.map.SolarSystem;
-import com.diogothecoder.arewealone.map.Universe;
+import com.diogothecoder.arewealone.tools.exceptions.NotFoundException;
+import javafx.geometry.Pos;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -22,17 +24,12 @@ public class Navigation extends Action {
         super(actions);
     }
 
-    public LinkedHashMap<ActionEnum, Method> getPossibleActions() throws NoSuchMethodException {
-        Position currentPlayerPosition = null;
-
-        // Where are we? In a Solar System or between Solar Systems, or between Galaxies?
-        Map currentMap = Game.getUniverse().getGalaxy().getSolarSystem();
-        if (currentMap != null) {
-            currentPlayerPosition = currentMap.getPlayerPosition();
-        }
+    public LinkedHashMap<ActionEnum, Method> getPossibleActions() throws NoSuchMethodException, NotFoundException {
+        Map currentMap = Map.getCurrentMap();
+        Position currentPlayerPosition = currentMap.getPlayerPosition();
 
         if (currentPlayerPosition == null) {
-            throw new NullPointerException("currentPlayerPosition is null!");
+            throw new NotFoundException("currentPlayerPosition is null!");
         }
 
         LinkedHashMap<ActionEnum, Method> navigationOptions = new LinkedHashMap<>();
@@ -57,6 +54,26 @@ public class Navigation extends Action {
             navigationOptions.put(NavigationEnum.WEST, this.getClass().getDeclaredMethod("goWest"));
         }
 
+        // We are at the Northern border?
+        if (currentPlayerPosition.getY() == 0) {
+            navigationOptions.put(NavigationEnum.LEAVE_NORTH, this.getClass().getDeclaredMethod("leaveMapViaNorth"));
+        }
+
+        // We are at the Eastern border?
+        if (currentPlayerPosition.getX() == Config.SIZE_OF_MAP - 1) {
+            navigationOptions.put(NavigationEnum.LEAVE_EAST, this.getClass().getDeclaredMethod("leaveMapViaEast"));
+        }
+
+        // We are at the Southern border?
+        if (currentPlayerPosition.getY() == Config.SIZE_OF_MAP - 1) {
+            navigationOptions.put(NavigationEnum.LEAVE_SOUTH, this.getClass().getDeclaredMethod("leaveMapViaSouth"));
+        }
+
+        // We are at the Western border?
+        if (currentPlayerPosition.getX() == 0) {
+            navigationOptions.put(NavigationEnum.LEAVE_WEST, this.getClass().getDeclaredMethod("leaveMapViaWest"));
+        }
+
         this.ACTIONS = navigationOptions;
 
         return this.ACTIONS;
@@ -69,7 +86,7 @@ public class Navigation extends Action {
                 System.out.println(navigationEnum.getKey() + " --> " + navigationEnum.getValue());
             }
             System.out.println();
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException | NotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -131,6 +148,68 @@ public class Navigation extends Action {
         Position currentPosition = currentMap.getPlayerPosition();
 
         currentMap.setPlayerPosition(new Position(currentPosition.getX() - 1, currentPosition.getY()));
+    }
+
+    protected void leaveMapViaNorth() {
+        try {
+            this.leaveMap(NavigationEnum.LEAVE_NORTH);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void leaveMapViaEast() {
+        try {
+            this.leaveMap(NavigationEnum.LEAVE_EAST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void leaveMapViaSouth() {
+        try {
+            this.leaveMap(NavigationEnum.LEAVE_SOUTH);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void leaveMapViaWest() {
+        try {
+            this.leaveMap(NavigationEnum.LEAVE_WEST);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void leaveMap(NavigationEnum navigationEnum) throws NotFoundException {
+        Map currentMap = Map.getCurrentMap();
+        Map parentMap = null;
+        Position playerParentMapPosition = null;
+
+        // We are at the Solar System, Galaxy time!
+        // TODO: allow for going to other Galaxies
+        if (currentMap instanceof SolarSystem) {
+            parentMap = Game.getUniverse().getGalaxy();
+            playerParentMapPosition = parentMap.getPlayerPosition();
+        }
+
+        if (parentMap == null) {
+            throw new NotFoundException("Unable to leave the Map, cannot determine parent map!");
+        }
+
+        if (playerParentMapPosition == null) {
+            throw new NotFoundException("Unable to get Player Parent Map position!");
+        }
+
+        Position newPosition = playerParentMapPosition;
+        switch (navigationEnum) {
+            case LEAVE_NORTH:
+                newPosition = new Position(playerParentMapPosition.getX(), playerParentMapPosition.getY() - 1);
+                break;
+        }
+
+        parentMap.setPlayerPosition(newPosition);
     }
 }
 

@@ -4,7 +4,11 @@ public enum NavigationEnum implements ActionEnum {
     NORTH("North", "Accelerate Northwards"),
     EAST("East", "Accelerate Eastwards"),
     SOUTH("South", "Accelerate Southwards"),
-    WEST("West", "Accelerate Westwards");
+    WEST("West", "Accelerate Westwards"),
+    LEAVE_NORTH("Leave N", "Leave the Solar System (via the North)"),
+    LEAVE_EAST("Leave E", "Leave the Solar System (via the East)"),
+    LEAVE_SOUTH("Leave S", "Leave the Solar System (via the South)"),
+    LEAVE_WEST("Leave W", "Leave the Solar System (via the West)");
 
     private final TypeEnum TYPE = TypeEnum.NAVIGATION;
 

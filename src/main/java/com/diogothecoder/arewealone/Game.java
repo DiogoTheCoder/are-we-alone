@@ -2,8 +2,11 @@ package com.diogothecoder.arewealone;
 
 import com.diogothecoder.arewealone.actions.Action;
 import com.diogothecoder.arewealone.actions.ActionEnum;
+import com.diogothecoder.arewealone.map.Galaxy;
 import com.diogothecoder.arewealone.map.Map;
+import com.diogothecoder.arewealone.map.SolarSystem;
 import com.diogothecoder.arewealone.map.Universe;
+import com.diogothecoder.arewealone.tools.exceptions.NotFoundException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,7 +23,12 @@ public class Game {
 		ArrayList<LinkedHashMap<ActionEnum, Method>> actionsList;
 
 		while (true) {
-			getUniverse().getGalaxy().getSolarSystem().display();
+			SolarSystem solarSystem = getUniverse().getGalaxy().getSolarSystem();
+			if (solarSystem == null) {
+				getUniverse().getGalaxy().display();
+			} else {
+				solarSystem.display();
+			}
 
 			try {
 				Map.getCurrentMap().getPlayerPosition().display();
@@ -32,7 +40,7 @@ public class Game {
 				actionsList.add(actions);
 
 				Action.executeFromInput(actionsList);
-			} catch (NoSuchMethodException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

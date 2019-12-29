@@ -6,6 +6,8 @@ import com.diogothecoder.arewealone.Position;
 import com.diogothecoder.arewealone.tools.Console;
 import com.diogothecoder.arewealone.tools.Logger;
 
+import java.util.Arrays;
+
 /**
  * This class represents the entire map
  * and is in charge of generating our world!
@@ -28,6 +30,10 @@ public class Universe extends Map {
 	}
 	
 	protected void generateMap() {
+		for (String[] strings : this.getMap()) {
+			Arrays.fill(strings, "");
+		}
+
 		this.galaxies = new Galaxy[Config.NUM_OF_GALAXIES];
 		for (int i = 0; i < galaxies.length; i++) {
 			this.galaxies[i] = new Galaxy();
@@ -35,8 +41,8 @@ public class Universe extends Map {
 			while (true) {
 				int randomLocationX = this.getRandomInt(1, this.getMap().length - 1, false);
 				int randomLocationY = this.getRandomInt(1, this.getMap()[randomLocationX].length - 1, false);
-				
-				if (this.getMap()[randomLocationX][randomLocationY] == null) {
+
+				if (this.getMap()[randomLocationX][randomLocationY] == null || this.getMap()[randomLocationX][randomLocationY].isEmpty()) {
 					this.getMap()[randomLocationX][randomLocationY] = Integer.toString(i);
 					break;
 				}
