@@ -22,8 +22,8 @@ public class Galaxy extends Map {
 			this.solarSystems[i] = new SolarSystem();
 			
 			while (true) {
-				int randomLocationX = this.getRandomInt(this.getMap().length, false);
-				int randomLocationY = this.getRandomInt(this.getMap()[randomLocationX].length, false);
+				int randomLocationX = this.getRandomInt(1, this.getMap().length - 1, false);
+				int randomLocationY = this.getRandomInt(1, this.getMap()[randomLocationX].length - 1, false);
 				
 				if (this.getMap()[randomLocationX][randomLocationY] == null) {
 					this.getMap()[randomLocationX][randomLocationY] = Integer.toString(i);
