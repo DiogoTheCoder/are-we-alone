@@ -2,7 +2,10 @@ package com.diogothecoder.arewealone.actions;
 
 import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.Position;
+import com.diogothecoder.arewealone.map.Galaxy;
 import com.diogothecoder.arewealone.map.Map;
+import com.diogothecoder.arewealone.map.SolarSystem;
+import com.diogothecoder.arewealone.map.Universe;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -36,22 +39,22 @@ public class Navigation extends Action {
 
         // Is there anything North of us?
         if (currentMap.isEmptyAt(currentPlayerPosition.getX(), currentPlayerPosition.getY() - 1)) {
-            navigationOptions.put(NavigationEnum.NORTH, this.getClass().getDeclaredMethod("goNorth", Position.class));
+            navigationOptions.put(NavigationEnum.NORTH, this.getClass().getDeclaredMethod("goNorth"));
         }
 
         // What about East?
         if (currentMap.isEmptyAt(currentPlayerPosition.getX() + 1, currentPlayerPosition.getY())) {
-            navigationOptions.put(NavigationEnum.EAST, this.getClass().getDeclaredMethod("goEast", Position.class));
+            navigationOptions.put(NavigationEnum.EAST, this.getClass().getDeclaredMethod("goEast"));
         }
 
         // And how about South?
         if (currentMap.isEmptyAt(currentPlayerPosition.getX(), currentPlayerPosition.getY() + 1)) {
-            navigationOptions.put(NavigationEnum.SOUTH, this.getClass().getDeclaredMethod("goSouth", Position.class));
+            navigationOptions.put(NavigationEnum.SOUTH, this.getClass().getDeclaredMethod("goSouth"));
         }
 
         // Finally, what about West?
         if (currentMap.isEmptyAt(currentPlayerPosition.getX() - 1, currentPlayerPosition.getY())) {
-            navigationOptions.put(NavigationEnum.WEST, this.getClass().getDeclaredMethod("goWest", Position.class));
+            navigationOptions.put(NavigationEnum.WEST, this.getClass().getDeclaredMethod("goWest"));
         }
 
         this.ACTIONS = navigationOptions;
@@ -102,20 +105,48 @@ public class Navigation extends Action {
         return this.ACTIONS;
     }
 
-    private Position goNorth(Position currentPosition) {
-        return new Position(currentPosition.getX(), currentPosition.getY() - 1);
+    protected void goNorth() {
+        Map currentMap = getCurrentMap();
+        Position currentPosition = currentMap.getPlayerPosition();
+
+        currentMap.setPlayerPosition(new Position(currentPosition.getX(), currentPosition.getY() - 1));
     }
 
-    private Position goEast(Position currentPosition) {
-        return new Position(currentPosition.getX() + 1, currentPosition.getY());
+    protected void goEast() {
+        Map currentMap = getCurrentMap();
+        Position currentPosition = currentMap.getPlayerPosition();
+
+        currentMap.setPlayerPosition(new Position(currentPosition.getX() + 1, currentPosition.getY()));
     }
 
-    private Position goSouth(Position currentPosition) {
-        return new Position(currentPosition.getX(), currentPosition.getY() + 1);
+    protected void goSouth() {
+        Map currentMap = getCurrentMap();
+        Position currentPosition = currentMap.getPlayerPosition();
+
+        currentMap.setPlayerPosition(new Position(currentPosition.getX(), currentPosition.getY() + 1));
     }
 
-    private Position goWest(Position currentPosition) {
-        return new Position(currentPosition.getX() - 1, currentPosition.getY());
+    protected void goWest() {
+        Map currentMap = getCurrentMap();
+        Position currentPosition = currentMap.getPlayerPosition();
+
+        currentMap.setPlayerPosition(new Position(currentPosition.getX() - 1, currentPosition.getY()));
+    }
+
+    private Map getCurrentMap() {
+        Universe universe = Game.getUniverse();
+
+        Galaxy galaxy = universe.getGalaxy();
+        if (galaxy == null) {
+            return universe;
+        }
+
+        SolarSystem solarSystem = galaxy.getSolarSystem();
+        if (solarSystem == null) {
+            return galaxy;
+        }
+
+        return solarSystem;
     }
 }
 

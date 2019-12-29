@@ -1,10 +1,13 @@
 package com.diogothecoder.arewealone.actions;
 
+import com.diogothecoder.arewealone.Game;
 import com.diogothecoder.arewealone.tools.Console;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 abstract public class Action {
     private LinkedHashMap<ActionEnum, Method> ACTIONS;
@@ -37,20 +40,37 @@ abstract public class Action {
 
     public static void displayPossibleActions(LinkedHashMap<ActionEnum, Method> actions) {
         System.out.println();
-        actions.forEach((key, value) -> System.out.println(key + " --> " + value));
+        actions.forEach((key, value) -> System.out.println(key.getKey() + " --> " + key.getValue()));
         System.out.println();
     }
 
     public static void executeFromInput(ArrayList<LinkedHashMap<ActionEnum, Method>> actions) {
-        String action = Console.getUserInput();
+        String action = Console.getUserInput().toUpperCase();
 
-        boolean actionFound = false;
+        AtomicBoolean actionFound = new AtomicBoolean(false);
         for (LinkedHashMap<ActionEnum, Method> actionList : actions) {
             actionList.forEach((key, value) -> {
-                System.out.println("This is a test");
+                if (actionFound.get()) {
+                    return;
+                }
+
+                String actionKey = key.getKey().toUpperCase();
+                if (actionKey.equals(action)) {
+                    actionFound.set(true);
+
+                    try {
+                        switch (key.getType()) {
+                            case NAVIGATION:
+                                actionList.get(key).invoke(Game.getPlayer().getNavigation());
+                                break;
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
 
-            if (actionFound) {
+            if (actionFound.get()) {
                 break;
             }
         }

@@ -82,30 +82,7 @@ public class Player {
 		Logger.Info("The Player is at Coordinate (X, Y): (" + pos.getX() + ", " + pos.getY() + ")");
 	}
 
-	protected Navigation getNavigation() {
+	public Navigation getNavigation() {
 		return this.navigation;
-//		LinkedHashMap<Character, String> navigationOptions = new LinkedHashMap<>();
-//
-//		// Is there anything North of us?
-//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() - 1)) {
-//			navigationOptions.put('N', "Accelerate Northwards");
-//		}
-//
-//		// What about East?
-//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() + 1, this.solarSystemPosition.getY())) {
-//			navigationOptions.put('E', "Accelerate Eastwards");
-//		}
-//
-//		// And how about South?
-//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX(), this.solarSystemPosition.getY() + 1)) {
-//			navigationOptions.put('S', "Accelerate Southwards");
-//		}
-//
-//		// Finally, what about West?
-//		if (this.currentSolarSystem.isEmptyAt(this.solarSystemPosition.getX() - 1, this.solarSystemPosition.getY())) {
-//			navigationOptions.put('W', "Accelerate Westwards");
-//		}
-//
-//		return navigationOptions;
 	}
 }
