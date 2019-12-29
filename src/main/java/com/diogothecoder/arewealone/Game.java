@@ -1,8 +1,12 @@
 package com.diogothecoder.arewealone;
 
-import com.diogothecoder.arewealone.actions.Navigation;
+import com.diogothecoder.arewealone.actions.Action;
+import com.diogothecoder.arewealone.actions.ActionEnum;
 import com.diogothecoder.arewealone.map.Universe;
-import com.diogothecoder.arewealone.tools.Console;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Game {
 	private static Universe theUniverse;
@@ -12,16 +16,23 @@ public class Game {
 		theUniverse = Universe.getInstance();
 		thePlayer = Player.getInstance();
 
-		getUniverse().getGalaxy().getSolarSystem().display();
-		thePlayer.getNavigation().displayPossibleActions();
+		ArrayList<LinkedHashMap<ActionEnum, Method>> actionsList;
 
-//		while (true) {
-//			getUniverse().getGalaxy().getSolarSystem().display();
-//
-//			thePlayer.getNavigation().displayPossibleActions();
-//			// displayPossibleActions();
-//			// executeAction(Console.getUserInput());
-//		}
+		while (true) {
+			getUniverse().getGalaxy().getSolarSystem().display();
+
+			try {
+				LinkedHashMap<ActionEnum, Method> actions = getPlayer().getNavigation().getPossibleActions();
+				Action.displayPossibleActions(actions);
+
+				actionsList = new ArrayList<>();
+				actionsList.add(actions);
+
+				Action.executeFromInput(actionsList);
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static Universe getUniverse() {
@@ -32,32 +43,4 @@ public class Game {
 		return thePlayer;
 	}
 
-//	private static void displayNavigationOptions() {
-//		System.out.println();
-//		thePlayer.getNavigationOptions().forEach((key, value) -> System.out.println(key + " --> " + value));
-//		System.out.println();
-//	}
-
-//	private static void executeAction(String action) {
-//		System.out.println();
-//		switch (action.toUpperCase()) {
-//			case "N":
-//				System.out.println("Northwards we go!");
-//				thePlayer.goNorth();
-//				break;
-//			case "E":
-//				System.out.println("Eastwards we go!");
-//				thePlayer.goEast();
-//				break;
-//			case "S":
-//				System.out.println("Southwards we go!");
-//				thePlayer.goSouth();
-//				break;
-//			case "W":
-//				System.out.println("Westwards we go!");
-//				thePlayer.goWest();
-//				break;
-//		}
-//	}
-	
 }

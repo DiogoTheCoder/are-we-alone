@@ -9,17 +9,17 @@ import java.util.LinkedHashMap;
 
 public class Navigation extends Action {
     // We use LinkedHashMap and not just regular HashMap, so we can maintain the insertion order
-    private LinkedHashMap<Enum<?>, Method> ACTIONS;
+    private LinkedHashMap<ActionEnum, Method> ACTIONS;
 
     public Navigation() {
         this.ACTIONS = this.getAll();
     }
 
-    private Navigation(LinkedHashMap<Enum<?>, Method> actions) {
+    private Navigation(LinkedHashMap<ActionEnum, Method> actions) {
         super(actions);
     }
 
-    public LinkedHashMap<Enum<?>, Method> getPossibleActions() throws NoSuchMethodException {
+    public LinkedHashMap<ActionEnum, Method> getPossibleActions() throws NoSuchMethodException {
         Position currentPlayerPosition = null;
 
         // Where are we? In a Solar System or between Solar Systems, or between Galaxies?
@@ -32,7 +32,7 @@ public class Navigation extends Action {
             throw new NullPointerException("currentPlayerPosition is null!");
         }
 
-        LinkedHashMap<Enum<?>, Method> navigationOptions = new LinkedHashMap<>();
+        LinkedHashMap<ActionEnum, Method> navigationOptions = new LinkedHashMap<>();
 
         // Is there anything North of us?
         if (currentMap.isEmptyAt(currentPlayerPosition.getX(), currentPlayerPosition.getY() - 1)) {
@@ -62,8 +62,8 @@ public class Navigation extends Action {
     public void displayPossibleActions() {
         try {
             System.out.println();
-            for (Enum<?> navigationEnum : this.getPossibleActions().keySet()) {
-                System.out.println(navigationEnum.name() + " --> " + ((NavigationEnum) navigationEnum).getValue());
+            for (ActionEnum navigationEnum : this.getPossibleActions().keySet()) {
+                System.out.println(navigationEnum.getKey() + " --> " + navigationEnum.getValue());
             }
             System.out.println();
         } catch (NoSuchMethodException e) {
@@ -71,9 +71,9 @@ public class Navigation extends Action {
         }
     }
 
-    public LinkedHashMap<Enum<?>, Method> getAll() {
+    public LinkedHashMap<ActionEnum, Method> getAll() {
         if (this.ACTIONS == null) {
-            LinkedHashMap<Enum<?>, Method> navigationEnumRunnableLinkedHashMap = new LinkedHashMap<>();
+            LinkedHashMap<ActionEnum, Method> navigationEnumRunnableLinkedHashMap = new LinkedHashMap<>();
             try {
                 navigationEnumRunnableLinkedHashMap.put(
                         NavigationEnum.NORTH,

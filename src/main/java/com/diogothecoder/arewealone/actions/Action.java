@@ -1,20 +1,23 @@
 package com.diogothecoder.arewealone.actions;
 
+import com.diogothecoder.arewealone.tools.Console;
+
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-abstract class Action {
-    private LinkedHashMap<Enum<?>, Method> ACTIONS;
+abstract public class Action {
+    private LinkedHashMap<ActionEnum, Method> ACTIONS;
 
     protected Action() { this.ACTIONS = this.getAll(); }
-    protected Action(LinkedHashMap<Enum<?>, Method> actions) {
+    protected Action(LinkedHashMap<ActionEnum, Method> actions) {
         this.ACTIONS = actions;
     }
 
-    public LinkedHashMap<Enum<?>, Method> getAll() {
+    public LinkedHashMap<ActionEnum, Method> getAll() {
         return this.ACTIONS;
     }
-    private LinkedHashMap<Enum<?>, Method> getPossibleActions() throws NoSuchMethodException {
+    private LinkedHashMap<ActionEnum, Method> getPossibleActions() throws NoSuchMethodException {
         if (this.ACTIONS == null) {
             this.ACTIONS = this.getAll();
         }
@@ -32,9 +35,24 @@ abstract class Action {
         }
     }
 
-    public void displayPossibleActions(LinkedHashMap<Enum<?>, Method> actions) {
+    public static void displayPossibleActions(LinkedHashMap<ActionEnum, Method> actions) {
         System.out.println();
         actions.forEach((key, value) -> System.out.println(key + " --> " + value));
         System.out.println();
+    }
+
+    public static void executeFromInput(ArrayList<LinkedHashMap<ActionEnum, Method>> actions) {
+        String action = Console.getUserInput();
+
+        boolean actionFound = false;
+        for (LinkedHashMap<ActionEnum, Method> actionList : actions) {
+            actionList.forEach((key, value) -> {
+                System.out.println("This is a test");
+            });
+
+            if (actionFound) {
+                break;
+            }
+        }
     }
 }

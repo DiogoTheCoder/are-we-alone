@@ -1,6 +1,6 @@
 package com.diogothecoder.arewealone.actions;
 
-public enum NavigationEnum {
+public enum NavigationEnum implements ActionEnum {
     NORTH("North", "Accelerate Northwards"),
     EAST("East", "Accelerate Eastwards"),
     SOUTH("South", "Accelerate Southwards"),
